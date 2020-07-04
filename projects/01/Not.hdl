@@ -1,0 +1,25 @@
+// This file is part of www.nand2tetris.org
+// and the book "The Elements of Computing Systems"
+// by Nisan and Schocken, MIT Press.
+// File name: projects/01/Not.hdl
+
+/**
+ * Not gate:
+ * out = not in
+ */
+
+// nand = not(x and y)
+// so if we feed in to both inputs of the nand gate then we get not(x and x) === not(x)
+// x   out
+
+// 0    1             !x and !x  === not(x and x) === not(x)
+// 1    0
+
+CHIP Not {
+    IN in;
+    OUT out;
+
+    PARTS:
+    // Put your code here:
+    Nand(a=in, b=in, out=out);
+}

@@ -1,0 +1,66 @@
+// This file is part of www.nand2tetris.org
+// and the book "The Elements of Computing Systems"
+// by Nisan and Schocken, MIT Press.
+// File name: projects/01/Mux.hdl
+
+/**
+ * Multiplexor:
+ * out = a if sel == 0
+ *       b otherwise
+ */
+
+ // a    b  sel  out
+ // 0    0   0    0
+ // 0    0   1    0
+ // 1    0   0    1
+ // 1    0   1    0
+ // 0    1   0    0
+ // 0    1   1    1
+ // 1    1   0    1
+ // 1    1   1    1
+
+// (a and not b and notsel) OR (nota and b and sel) OR (a and b and not sel) OR (a and b and sel)
+// (a and not b and notsel) OR (nota and b and sel) OR (a and b)
+
+
+//  Not(in=b, out=notb);
+// Not(in=a, out=nota);
+// Not(in=sel, out=notsel);
+// And(a=a, b=b, out=aandb);
+// And(a=a, b=notb, out=aandnotb);
+// And(a=nota, b=b, out=notaandb);
+// And(a=aandnotb, b=notsel, out=cond1);
+// And(a=notaandb, b=sel, out=cond2);
+// Or(a=cond1, b=cond2, out=cond3);
+// Or(a=cond3, b=aandb, out=out);
+
+// KMAP
+//  bsel   a
+//         0     1
+//  00 .   0 .   1
+//  01 .   0 .   0
+//  10 .   0 .   1   --- second group of just one block!
+//  11 .   1 .   1 . --- first group
+
+// b and sel OR a and nsel from using the kmap
+// so the first group when bsel is 11 whatever the value of a so a can be eliminated for that so b and sel is the first expression.
+// now for the second group is just one block we get a and not sel (b does not change so it can be eliminated)
+
+// so now :
+
+//  Not(in=sel,out=nsel);
+//  And(a=a,b=nsel,out=c);
+//  And(a=b,b=sel,out=d);
+//  Or(a=c,b=d,out=out);
+
+CHIP Mux {
+    IN a, b, sel;
+    OUT out;
+
+    PARTS:
+        Not(in=sel,out=nsel);
+        And(a=a,b=nsel,out=c);
+        And(a=b,b=sel,out=d);
+        Or(a=c,b=d,out=out);
+    // Put your code here:
+}
